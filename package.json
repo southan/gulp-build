@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "dependencies": {
+    "browser-sync": "*",
+    "del": "*",
+    "gulp": "*",
+    "gulp-plumber": "*",
+    "gulp-util": "*",
+    "merge-stream": "*",
+    "node-notifier": "*",
+    "object-assign": "*"
+  }
+}
