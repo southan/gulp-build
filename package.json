@@ -1,13 +1,33 @@
 {
   "private": true,
-  "dependencies": {
+  "name": "gulp-build",
+  "version": "0.0.1",
+  "description": "Easily create gulp builds using nothing more than a configuration object.",
+  "author": "Alex Southan",
+  "contributors" : [],
+  "license": "MIT",
+  "homepage": "https://github.com/southan/gulp-build",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/southan/gulp-build"
+  },
+  "bugs": {
+    "url": "https://github.com/southan/gulp-build/issues"
+  },
+  "peerDependencies": {
     "browser-sync": "*",
     "del": "*",
-    "gulp": "*",
     "gulp-plumber": "*",
     "gulp-util": "*",
     "merge-stream": "*",
     "node-notifier": "*",
     "object-assign": "*"
-  }
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "keywords": [
+    "gulp",
+    "gulpplugin"
+  ]
 }
