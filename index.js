@@ -50,7 +50,12 @@ function getPlugins() {
 		var modules = util.assign( {}, project.devDependencies, project.dependencies );
 
 		Object.keys( modules ).forEach( function ( module ) {
-			plugins[ module.replace( "gulp-", "" ).replace( /-/g, "_" ) ] = module;
+			var nameProp = module.replace( /-/g, "_" );
+			var namePropShort = nameProp.replace( "gulp_", "" );
+
+			// Gulp plugins get priority e.g. "jshint" will reference gulp-jshint over jshint
+			if ( typeof plugins[ namePropShort ] === "undefined" || nameProp !== namePropShort  )
+				plugins[ namePropShort ] = module;
 		});
 
 		return plugins;
