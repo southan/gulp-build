@@ -14,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/southan/gulp-build/issues"
   },
-  "peerDependencies": {
+  "dependencies": {
     "browser-sync": "*",
     "del": "*",
     "gulp-plumber": "*",
