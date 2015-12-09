@@ -139,7 +139,7 @@ module.exports = function ( gulp, options ) {
 			"!" + opts.base + "{,/**}",
 			"*.htaccess"
 		]
-	}, options.package || {} );
+	}, options.package );
 
 	Object.keys( tasks ).forEach( function ( name ) {
 		var task = tasks[ name ];
