@@ -163,7 +163,7 @@ module.exports = function ( gulp, options ) {
 
 	gulp.task( "build", [ "clean" ], function () {
 		var merged = util.merge(),
-			args   = util.assign( {}, this.seq.slice( -1 ) === "package" ? opts.package.args : {}, util.util.env );
+			args   = util.assign( {}, this.seq.slice( -1 )[0] === "package" ? opts.package.args : {}, util.util.env );
 
 		Object.keys( tasks ).forEach( function ( name ) {
 			var task = tasks[ name ];
