@@ -146,6 +146,8 @@ module.exports = function ( gulp, options ) {
 
 		if ( typeof task.onError === "undefined" )
 			task.onError = opts.onError;
+		if ( typeof task.merge === "undefined" )
+			task.merge = true;
 		if ( typeof task.base === "undefined" )
 			task.base = opts.base;
 		if ( typeof task.dest === "undefined" )
