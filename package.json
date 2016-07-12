@@ -21,6 +21,7 @@
     "fancy-log": "*",
     "gulp-plumber": "*",
     "merge-stream": "*",
+    "minimist": "*",
     "node-notifier": "*",
     "pretty-hrtime": "*"
   },
