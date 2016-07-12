@@ -137,8 +137,6 @@ module.exports = function ( gulp, tasks ) {
 	 * Build
 	 */
 	gulp.task( "build", [ "clean" ], function () {
-		console.log( plugins );
-
 		var args = Object.assign(
 			{},
 			this.seq.slice( -1 )[0] === "package" ? pkg.args : {},
