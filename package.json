@@ -16,12 +16,13 @@
   },
   "dependencies": {
     "browser-sync": "*",
+    "chalk": "*",
     "del": "*",
+    "fancy-log": "*",
     "gulp-plumber": "*",
-    "gulp-util": "*",
     "merge-stream": "*",
     "node-notifier": "*",
-    "object-assign": "*"
+    "pretty-hrtime": "*"
   },
   "engines": {
     "node": ">=0.10.0"
