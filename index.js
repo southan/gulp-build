@@ -234,8 +234,8 @@ module.exports = function ( gulp, tasks ) {
 					stream.on( "end", function () {
 						timer.finish();
 
-						if ( browserSync && task.sync )
-							browserSync.reload( task.sync );
+						if ( browserSync && task.browserSync === undefined || task.browserSync )
+							browserSync.reload( task.browserSync );
 					});
 				}
 			});
