@@ -9,15 +9,44 @@ var getLazy = require( "./lib/lazy" );
  * @type {Object}
  */
 var utils = getLazy({
-	del       : "del",
 	chalk     : "chalk",
+	del       : "del",
 	log       : "fancy-log",
 	merge     : "merge-stream",
+	minimist  : "minimist",
 	notifier  : "node-notifier",
 	path      : "path",
 	plumber   : "gulp-plumber",
 	prettyTime: "pretty-hrtime"
 });
+
+/**
+ * Helper for logging timed events.
+ *
+ * @param {String} name - Name of file or task
+ */
+function Timer( name ) {
+	this.name = utils.chalk.cyan( name );
+}
+
+/**
+ * Start the log.
+ *
+ * @param {String} text - Description action for the file or task
+ */
+Timer.prototype.start = function ( text ) {
+	this.time = process.hrtime();
+	utils.log( text || "Starting", this.name, "..." );
+};
+
+/**
+ * Finish the log.
+ *
+ * @param {String} text - Description action for the file or task
+ */
+Timer.prototype.finish = function ( text ) {
+	utils.log( text || "Finished", this.name, "after", utils.chalk.magenta( utils.prettyTime( process.hrtime( this.time ) ) ) );
+};
 
 /**
  * Utility for creating and processing streams.
@@ -95,7 +124,7 @@ module.exports = function ( gulp, tasks ) {
 	 *
 	 * @type {Object}
 	 */
-	var argv = require( "minimist" )( process.argv.slice( 2 ) );
+	var argv = utils.minimist( process.argv.slice( 2 ) );
 
 	/**
 	 * Package arguments.
@@ -149,11 +178,11 @@ module.exports = function ( gulp, tasks ) {
 			return build({
 				onError: task.onError,
 				files  : task.files,
-				pipes  : task.pipes && task.pipes.call( this, args ),
+				pipes  : task.pipes && task.pipes.call( plugins, args ),
 				base   : task.base,
 				dest   : task.dest
 			});
-		}, plugins );
+		});
 
 		return utils.merge( srcs );
 	});
@@ -177,25 +206,38 @@ module.exports = function ( gulp, tasks ) {
 			var task = tasks[ name ];
 
 			gulp.watch( task.watch || task.files ).on( "change", function ( file ) {
-				var filename = utils.chalk.magenta( utils.path.basename( file.path ) );
-				var time     = process.hrtime();
+				var timer = new Timer( utils.path.basename( file.path ) );
 
-				utils.log( "Starting", filename, "..." );
+				if ( file.type === "deleted" ) {
+					timer.start( "Deleting" );
 
-				var stream = build({
-					onError: task.onError,
-					files  : task.doOne ? file.path : task.files,
-					pipes  : task.pipes && task.pipes.call( plugins, argv ),
-					base   : task.base,
-					dest   : task.dest
-				});
+					var base = task.base !== undefined ? utils.path.resolve( task.base ) : process.cwd();
+					var dest = utils.path.resolve( task.dest, utils.path.relative( base, file.path ) );
 
-				return stream.on( "end", function () {
-					utils.log( "Finished", filename, "after", utils.chalk.magenta( utils.prettyTime( process.hrtime( time ) ) ) );
+					if ( dest ) {
+						utils.del( dest ).then(function () {
+							timer.finish( "Deleted" );
+						});
+					}
 
-					if ( browserSync && task.sync )
-						browserSync.reload( task.sync );
-				});
+				} else {
+					timer.start();
+
+					var stream = build({
+						onError: task.onError,
+						files  : task.doOne ? file.path : task.files,
+						pipes  : task.pipes && task.pipes.call( plugins, argv ),
+						base   : task.base,
+						dest   : task.dest
+					});
+
+					stream.on( "end", function () {
+						timer.finish();
+
+						if ( browserSync && task.sync )
+							browserSync.reload( task.sync );
+					});
+				}
 			});
 		});
 	});
