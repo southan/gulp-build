@@ -162,12 +162,13 @@ module.exports = function ( gulp, tasks ) {
 	 * Watch
 	 */
 	gulp.task( "watch", [ "build" ], function () {
+		var bSyncConfig;
 		var browserSync;
 
 		try {
-			browserSync = require( process.cwd() + "/browserSync.json" );
+			bSyncConfig = require( process.cwd() + "/browserSync.json" );
 			browserSync = require( "browser-sync" ).create();
-			browserSync.init( browserSync );
+			browserSync.init( bSyncConfig );
 		} catch ( e ) {
 			browserSync = null;
 		}
