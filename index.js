@@ -208,7 +208,7 @@ module.exports = function ( gulp, tasks ) {
 			gulp.watch( task.watch || task.files ).on( "change", function ( file ) {
 				var timer = new Timer( utils.path.basename( file.path ) );
 
-				if ( file.type === "deleted" ) {
+				if ( task.doOne && file.type === "deleted" ) {
 					timer.start( "Deleting" );
 
 					var base = task.base !== undefined ? utils.path.resolve( task.base ) : process.cwd();
