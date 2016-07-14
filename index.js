@@ -207,7 +207,7 @@ module.exports = function ( gulp, tasks ) {
 		Object.keys( tasks ).forEach( function ( name ) {
 			var task = tasks[ name ];
 
-			gulp.watch( task.watch || task.files ).on( "change", function ( file ) {
+			gulp.watch( task.watch || task.files, function ( file ) {
 				var timer = new Timer( utils.path.basename( file.path ) );
 
 				if ( task.doOne && file.type === "deleted" ) {
