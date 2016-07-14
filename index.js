@@ -197,7 +197,9 @@ module.exports = function ( gulp, tasks ) {
 		try {
 			bSyncConfig = require( process.cwd() + "/browserSync.json" );
 			browserSync = require( "browser-sync" ).create();
-			browserSync.init( bSyncConfig );
+			browserSync.init( Object.assign( bSyncConfig, {
+				logFileChanges: false	
+			}));
 		} catch ( e ) {
 			browserSync = null;
 		}
